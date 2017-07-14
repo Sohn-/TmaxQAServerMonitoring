@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tmaxqa.mappers.ComMapper">
+
+
+
+	<insert id="insertCom" parameterType="Com">
+		insert into com (ip,  dept, owner, cpu, mem, dist)
+		values(#{ip}, #{dept}, #{owner}, #{cpu}, #{mem}, #{dist})
+	</insert>
+  
+  
+  	<update id="updateCom" parameterType="Com">
+  	update com
+  	set dept = #{dpet},
+  		owner=#{owner},
+  		cpu=#{cpu},
+  		mem=#{mem},
+  		dist=#{dist},	
+  	where ip=#{ip}  	 	
+  	</update>
+ 
+  	
+  	<delete id="deleteCom" parameterType="String">
+  	delete from com
+  	where ip=#{ip}
+  	</delete>
+  		
+  
+</mapper>

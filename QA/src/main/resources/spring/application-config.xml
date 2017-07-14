@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+		<!-- 아래 2개 추가함 -->
+
+<context:annotation-config>
+<!-- 이거 주석처리하니까  NoClassDefFoundError: org.springframework.beans.FatalBeanException 에러 안남-->
+<!-- 그러나 found 0:.. @repository에서 빈을 자동으로 탐지하려면 필요한것 같다  -->
+<context:component-scan base-package="com.tmaxqa.*">
+</context:component-scan>
+</context:annotation-config>
+
+
+ <bean name="usersDao" class="com.tmaxqa.dao.UsersDaoImpl"/>
+ <bean id="users" class="com.tmaxqa.entity.Users"/>
+ <bean id="com" class="com.tmaxqa.entity.Com"/>
+
+<!-- 
+<bean id="usersDaoImpl" class="com.tmaxqa.dao.UsersDaoImpl">
+</bean>
+ -->
+
+<!-- 
+<bean id="UsersDaoTest" class="com.tmaxqa.test.UsersDaoTest">
+	<property name="UsersDao">
+		<ref local="UsersDao" />
+	</property>
+</bean>
+ -->
+
+	<!-- <context:exclude-filter type="assignable" expression="jdbc.dao.DepartmentDaoIJdbcImpl"/>
+	<context:exclude-filter type="regex" expression=".*jdbc.*"/> -->
+	<!-- <context:exclude-filter type="aspectj" expression="jdbc..*MybatisImpl"/> -->
+<!-- </context:component-scan> -->
+
+<!-- 임시주석 -->
+<!-- <context:property-placeholder location="tibero.properties"/> -->
+<!-- <context:property-placeholder location="classpath:/tibero.properties"/> -->
+
+
+<!-- <bean class="org.springframework.jdbc.core.JdbcTemplate"> -->
+<!-- 
+<bean class="org.springframework.jdbc.core.JdbcTemplate">
+	<constructor-arg name="dataSource" ref="dataSource"></constructor-arg>
+</bean>-->
+
+
+<!-- 잠시 주석처리해보겠음 -->
+<!-- <bean class="org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate">
+	<constructor-arg name="dataSource" ref="dataSource"></constructor-arg>
+</bean> -->
+
+
+<!--  
+ <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+ 		<property name="driverClassName" value="${jdbc.driverClassName}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+		<property name="maxTotal" value="${jdbc.maxTotal}"></property>
+
+</bean>  
+ -->
+
+
+<!-- 잠시 주석처리해보겠음 -->
+ <!-- <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 		<property name="driverClassName" value="$(jdbc.driverClassName)"></property>
+ 		<property name="url" value="${jdbc.url}"></property>
+ 		<property name="username" value="${jdbc.username}"></property>
+ 		<property name="password" value="${jdbc.password}"></property>
+ </bean> -->
+ 
+ <!--  $(jdbc.driverClassName)못읽어와서 티베로 프로퍼티 내용 직접 작성 -->
+ <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+ 		<property name="driverClassName" value="com.tmax.tibero.jdbc.TbDriver"></property>
+ 		<property name="url" value="jdbc:tibero:thin:@192.168.5.42:8629:tibero"></property>
+ 		<property name="username" value="tibero"></property>
+ 		<property name="password" value="tmax"></property>
+ </bean>
+
+
+
+<!-- 잠시 주석처리해보겠음 -->
+<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"></property>
+	<property name="configLocation" value="mybatis_config.xml"></property>
+</bean>
+<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactoryBean"></constructor-arg>
+</bean>
+
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<property name="dataSource" ref="dataSource"></property>
+</bean>
+
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
+<!--  beans found 0: 해결책으로 일단 작성 -->
+<!-- <aop:config proxy-target-class="true"> --> 
+
+
+</beans>
+
+
