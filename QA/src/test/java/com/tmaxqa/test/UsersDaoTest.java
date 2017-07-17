@@ -46,13 +46,13 @@ public class UsersDaoTest {
 		Users user1 = new Users();
 		Users user2;
 		
-		user1.setId("userid");
-		user1.setPw("1234");
-		user1.setDept("OQA2");
-		user1.setName("admin");
+		//user1.setId("");
+		user1.setPw("ZlN");
+		user1.setDept("OQA1 wmfwmfwmfwmfwmfmwf");
+		user1.setName("부유정 즐");
 		
 		
-		//LOG.trace("수업 1 : 부서의 개수는 [dao]: "+dao.insertUser(user1)); //OK
+		LOG.info("수업 1 : 부서의 개수는 [dao]: "+dao.insertUser(user1)); //OK
 		System.out.println("test");
 		LOG.warn(user1.toString());
 		LOG.debug("수업 1 :  "+dao.updateUser(user1)); //OK
